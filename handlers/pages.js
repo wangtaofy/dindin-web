@@ -9,7 +9,8 @@ exports.home = async function (request, reply) {
     }
 
     reply.view('index', {
-      recipes: payload
+      recipes: payload,
+      user: request.auth.credentials
     });
   });
 };
@@ -24,5 +25,15 @@ exports.recipesDetail = async function(request, reply) {
     reply.view('recipes', {
       recipe: payload
     });
+  });
+};
+
+exports.login = async function(request, reply) {
+  reply.view('login');
+};
+
+exports.createRecipe = function(request, reply) {
+  reply.view('create', {
+    user: request.auth.credentials
   });
 };

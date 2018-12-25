@@ -6,6 +6,7 @@ const Hapi = require('hapi');
 const DinDinApi = require('dindin-api');
 const Inert = require('inert');
 const Vision = require('vision');
+const HapiAuthCookie = require('hapi-auth-cookie');
 
 // 引入路由
 const routes = require('./routes');
@@ -17,7 +18,8 @@ const init = async () => {
   await Server.register([
     DinDinApi,
     Inert,
-    Vision
+    Vision,
+    HapiAuthCookie
   ]);
 
   Server.bind({
@@ -37,6 +39,12 @@ const init = async () => {
     isCached: false,
     partialsPath: './views/partials',
     helpersPath: './views/helpers'
+  });
+
+  // 创建身份验证策略
+  Server.auth.strategy('session', 'cookie', 'try', {
+    password: 'password-that-is-at-least-32-chars',
+    isSecure: false
   });
 
   Server.route([
